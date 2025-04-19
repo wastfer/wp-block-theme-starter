@@ -1,8 +1,13 @@
 #!/usr/bin/env node
 
-const inquirer = require("inquirer");
-const fs = require("fs-extra");
-const path = require("path");
+import inquirer from "inquirer";
+import fs from "fs-extra";
+import path from "path";
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 async function run() {
   const answers = await inquirer.prompt([
@@ -15,7 +20,7 @@ async function run() {
     { name: "version", message: "Version:", default: "1.0" }
   ]);
 
-  const { folderName, themeName, author, description, version } = answers;
+  const { folderName, themeName, author, description, version, themeURI, authorURI } = answers;
 
   const targetDir = path.resolve(process.cwd(), folderName);
   const templateDir = path.resolve(__dirname, "block-theme-boilerplate");
@@ -40,7 +45,7 @@ async function run() {
 
   await fs.writeFile(stylePath, styleContent);
 
-  console.log(`✅ Theme created successfully in '${folderName}/'. Additional meta can ge changed in '${folderName}/style.css'.`);
+  console.log(`✅ Theme created successfully in '${folderName}/'. Additional meta can be changed in '${folderName}/style.css'.`);
 }
 
 run();
